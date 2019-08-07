@@ -1,38 +1,32 @@
-var notesData = require("../data/tableData");
-var waitListData = require("../data/waitinglistData");
-
+var connection = require("../db/connection");
 
 module.exports = function(app) {
 
 
   app.get("/api/notes", function(req, res) {
-    res.json(notesData);
+    connection.query("SELECT * FROM notes", function(err, notesData) {
+      res.json(notesData);
+    });
   });
-
-  app.get("/api/waitlist", function(req, res) {
-    res.json(waitListData);
-  });
-
- 
-
-  app.post("/api/tables", function(req, res) {
   
-    if (tableData.length < 5) {
-      tableData.push(req.body);
-      res.json(true);
-    }
-    else {
-      waitListData.push(req.body);
-      res.json(false);
-    }
+ 
+  app.post("/api/notes", function(req, res) {
+    
+      connection.query("INSERT INTO notes SET ?", req.body, function(err, result) {
+        if (err) throw err;
+  
+        res.json(result);
+      });
+    });
+  
+  
+  
+  app.delete("/api/notesDelete", function(req, res) {
+    connection.query("DELETE FROM notes WHERE id = ?", req.body.id, function(err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
   });
 
+}
 
-  app.post("/api/clear", function(req, res) {
-   
-    notesData.length = 0;
-    waitListData.length = 0;
-
-    res.json({ ok: true });
-  });
-};
