@@ -1,32 +1,23 @@
-var connection = require("../db/connection");
+var router = require('express').Router();
+var connection = require('../database/connection');
 
-module.exports = function(app) {
-
-
-  app.get("/api/notes", function(req, res) {
-    connection.query("SELECT * FROM notes", function(err, notesData) {
-      res.json(notesData);
-    });
-  });
-  
- 
-  app.post("/api/notes", function(req, res) {
-    
-      connection.query("INSERT INTO notes SET ?", req.body, function(err, result) {
+router.get("/api/getnotes", function (req, res) {
+    connection.query("SELECT * FROM notes", function (err, result) {
         if (err) throw err;
-  
-        res.json(result);
-      });
-    });
-  
-  
-  
-  app.delete("/api/notesDelete", function(req, res) {
-    connection.query("DELETE FROM notes WHERE id = ?", req.body.id, function(err, result) {
-      if (err) throw err;
-      res.json(result);
-    });
-  });
+        res.send(result)
+    })
+})
 
-}
+router.post("/api/submit", function (req, res) {
+    var sqlStr = `INSERT INTO notes (title, body)
+                  VALUES (?, ?)`
+    var data = [req.body.name, req.body.body];
 
+    connection.query(sqlStr, data, function(err, result){
+        if(err) throw err;
+        res.redirect("/notes")
+    })
+    console.log(req.body);
+})
+
+module.exports = router;
