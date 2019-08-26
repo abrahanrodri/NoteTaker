@@ -17,19 +17,20 @@ if (process.env.JAWSDB_URL) {
   });
 }
 
-// This code will turn BOOLEAN 0's and 1's returned from db into true or false
-connection.config.typeCast = function(field, next) {
-  if (field.type == "TINY" && field.length == 1) {
-    return field.string() == "1"; // 1 = true, 0 = false
-  }
-  return next();
-};
+// // This code will turn BOOLEAN 0's and 1's returned from db into true or false
+// connection.config.typeCast = function(field, next) {
+//   if (field.type == "TINY" && field.length == 1) {
+//     return field.string() == "1"; // 1 = true, 0 = false
+//   }
+//   return next();
+// };
 
-connection.connect(function(err){
-  if(err) throw err;
+// connection.connect(function(err){
+//   if(err) throw err;
 
-  console.log("Connected as id: " + connection.threadId)
-})
+//   console.log("Connected as id: " + connection.threadId)
+// })
 
+connection.connect();
 //This will export the connection to additional parts of app
 module.exports = connection;
