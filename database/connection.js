@@ -17,13 +17,13 @@ if (process.env.JAWSDB_URL) {
   });
 }
 
-// // This code will turn BOOLEAN 0's and 1's returned from db into true or false
-// connection.config.typeCast = function(field, next) {
-//   if (field.type == "TINY" && field.length == 1) {
-//     return field.string() == "1"; // 1 = true, 0 = false
-//   }
-//   return next();
-// };
+// This code will turn BOOLEAN 0's and 1's returned from db into true or false
+connection.config.typeCast = function(field, next) {
+  if (field.type == "TINY" && field.length == 1) {
+    return field.string() == "1"; // 1 = true, 0 = false
+  }
+  return next();
+};
 
 // connection.connect(function(err){
 //   if(err) throw err;
