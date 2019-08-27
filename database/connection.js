@@ -31,6 +31,6 @@ connection.config.typeCast = function(field, next) {
 //   console.log("Connected as id: " + connection.threadId)
 // })
 
-connection.connect();
+
 //This will export the connection to additional parts of app
 module.exports = connection;
